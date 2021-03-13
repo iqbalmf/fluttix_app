@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "975382384695",
+    "project_id": "fluttix-app-iqbs1",
+    "storage_bucket": "fluttix-app-iqbs1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975382384695:android:a11aa379e5e23bd7a2efb2",
+        "android_client_info": {
+          "package_name": "com.example.fluttix_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "975382384695-8ef8ebvpeh3h3dieqa6aurfsm2k0ecle.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApYD71ZbflvYiXRsSzQLKwxzZYsTsLQrY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "975382384695-8ef8ebvpeh3h3dieqa6aurfsm2k0ecle.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
