@@ -1,60 +1,43 @@
-import 'package:flutter/material.dart';
-import 'package:fluttix_app/services/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttix_app/bloc/theme_bloc.dart';
+import 'package:fluttix_app/bloc/user_bloc.dart';
+import 'package:fluttix_app/services/services.dart';
+import 'package:fluttix_app/ui/pages/pages.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+import 'bloc/blocs.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: Firebase.initializeApp(), builder: (context, snapshot) {
-          if(snapshot.hasError){
-            print(snapshot.error);
-          }
-          if(snapshot.connectionState == ConnectionState.done){
-            return InitWidget();
-          }
-          return CircularProgressIndicator();
-    });
+    return InitWidget();
   }
 }
 
 class InitWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Fluttix'),
-          centerTitle: true,
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  onPressed: () async {
-                    SignInSignUpResult result = await AuthServices.signUp(
-                        "iqbalmf68@gmail.com",
-                        "123456",
-                        "Iqbal M Fauzan",
-                        ["Action", "Drama", "Horror", "Comedy"],
-                        "Indonesian");
-
-                    if (result.user == null) {
-                      print(result.message);
-                    } else {
-                      print(result.user.toString());
-                    }
-                  },
-                  child: Text('Sign Up'))
-            ],
-          ),
+    return StreamProvider.value(
+      value: AuthServices.userStream,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => PageBloc()),
+          BlocProvider(create: (_) => UserBloc()),
+          BlocProvider(create: (_) => ThemeBloc()),
+        ],
+        child: BlocBuilder<ThemeBloc, ThemeState>(
+          builder: (_, themeState) =>
+              MaterialApp(
+                  theme: themeState.themeData,
+                  debugShowCheckedModeBanner: false, home: Wrapper()),
         ),
       ),
     );

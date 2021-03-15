@@ -20,4 +20,16 @@ class UserServices {
       'selectedLanguages': user.selectedLanguages,
     });
   }
+
+  static Future<Users> getUser(String id) async {
+    DocumentSnapshot snapshot = await _userCollection.doc(id).get();
+    List<String> genres = snapshot.data()['selectedGenres'].split(',');
+
+    return Users(id, snapshot.data()['email'],
+        name: snapshot.data()['name'],
+        profilPicture: snapshot.data()['profilPicture'],
+        selectedGenres: genres,
+        selectedLanguages: snapshot.data()['selectedLanguages'],
+        balance: snapshot.data()['balance']);
+  }
 }
