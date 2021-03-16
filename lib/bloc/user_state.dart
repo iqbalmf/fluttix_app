@@ -15,5 +15,5 @@ class UserLoaded extends UserState {
   UserLoaded(this.users);
 
   @override
-  List<Object> get props => throw UnimplementedError();
+  List<Object> get props => [users];
 }

@@ -24,7 +24,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    context.bloc<ThemeBloc>().add(ChangeTheme(ThemeData().copyWith(primaryColor: Colors.grey)));
+    context
+        .bloc<ThemeBloc>()
+        .add(ChangeTheme(ThemeData().copyWith(primaryColor: accentColor2)));
     return WillPopScope(
       onWillPop: () {
         context.bloc<PageBloc>().add(GoToSplashPage());
@@ -79,13 +81,23 @@ class _SignUpPageState extends State<SignUpPage> {
                                         (widget.registrationData.profileImage ==
                                                 null)
                                             ? AssetImage('assets/user_pic.png')
-                                            : FileImage(widget.registrationData
-                                                .profileImage))),
+                                            : FileImage(widget
+                                                .registrationData.profileImage),
+                                    fit: BoxFit.cover)),
                           ),
                           Align(
                             alignment: Alignment.bottomCenter,
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () async {
+                                if (widget.registrationData.profileImage ==
+                                    null) {
+                                  widget.registrationData.profileImage =
+                                      await getImage();
+                                } else {
+                                  widget.registrationData.profileImage = null;
+                                }
+                                setState(() {});
+                              },
                               child: Container(
                                 height: 28,
                                 width: 28,
@@ -127,6 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     height: 16,
                   ),
                   TextField(
+                      obscureText: true,
                       controller: passwordController,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -137,6 +150,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     height: 16,
                   ),
                   TextField(
+                      obscureText: true,
                       controller: reTypePasswordController,
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -148,11 +162,53 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   FloatingActionButton(
                     backgroundColor: mainColor,
-                    elevation:0,
-                    child: Icon(
-                      Icons.arrow_forward
-                    ),
-                    onPressed: () {},
+                    elevation: 0,
+                    child: Icon(Icons.arrow_forward),
+                    onPressed: () {
+                      if (!(nameController.text.trim() != "" &&
+                          emailController.text.trim() != "" &&
+                          passwordController.text.trim() != "" &&
+                          reTypePasswordController.text.trim() != "")) {
+                        Flushbar(
+                          duration: Duration(milliseconds: 1500),
+                          flushbarPosition: FlushbarPosition.TOP,
+                          backgroundColor: pinkColor,
+                          message: 'Please fill all the blank',
+                        ).show(context);
+                      } else if (passwordController.text !=
+                          reTypePasswordController.text) {
+                        Flushbar(
+                          duration: Duration(milliseconds: 1500),
+                          flushbarPosition: FlushbarPosition.TOP,
+                          backgroundColor: pinkColor,
+                          message: 'Mismatch password and confirmed password',
+                        ).show(context);
+                      } else if (passwordController.text.length < 6) {
+                        Flushbar(
+                          duration: Duration(milliseconds: 1500),
+                          flushbarPosition: FlushbarPosition.TOP,
+                          backgroundColor: pinkColor,
+                          message: 'Password\'s length min 6 character',
+                        ).show(context);
+                      } else if (!EmailValidator.validate(
+                          emailController.text)) {
+                        Flushbar(
+                          duration: Duration(milliseconds: 1500),
+                          flushbarPosition: FlushbarPosition.TOP,
+                          backgroundColor: pinkColor,
+                          message: 'Wrong formatted email address',
+                        ).show(context);
+                      } else {
+                        widget.registrationData.name = nameController.text;
+                        widget.registrationData.email = emailController.text;
+                        widget.registrationData.password =
+                            passwordController.text;
+                        //todo: goto preference page
+                        context
+                            .bloc<PageBloc>()
+                            .add(GoToPreferencePage(widget.registrationData));
+                      }
+                    },
                   )
                 ],
               )

@@ -7,6 +7,7 @@ import 'package:fluttix_app/bloc/blocs.dart';
 import 'package:fluttix_app/models/models.dart';
 import 'package:fluttix_app/services/services.dart';
 import 'package:fluttix_app/shared/shared.dart';
+import 'package:fluttix_app/ui/widgets/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';

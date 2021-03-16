@@ -19,62 +19,64 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: bgColor,
-        body: Stack(
-          children: [
-            Container(
-              color: accentColor2,
-            ),
-            SafeArea(
-              child: Container(
-                color: bgColor,
+    return SafeArea(
+      child: Scaffold(
+          backgroundColor: bgColor,
+          body: Stack(
+            children: [
+              Container(
+                color: accentColor2,
               ),
-            ),
-            PageView(
-              controller: pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  bottomNavBarIndex = index;
-                });
-              },
-              children: [
-                Center(
-                  child: MoviewPage(),
-                ),Center(
-                  child: Text(
-                      'My Tickets'
-                  ),
-                )
-              ],
-            ),
-            createCustomeBottomNavbar(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 46,
-                width: 46,
-                margin: EdgeInsets.only(bottom: 42),
-                child: FloatingActionButton(
-                  elevation: 0,
-                  backgroundColor: accentColor,
-                  child: SizedBox(
-                    height: 26,
-                    width: 26,
-                    child: Icon(
-                      MdiIcons.walletPlus,
-                      color: Colors.black.withOpacity(0.5),
-                    ),
-                  ),
-                  onPressed: () {
-                    context.bloc<UserBloc>().add(SignOut());
-                    AuthServices.signOut();
-                  },
+              SafeArea(
+                child: Container(
+                  color: bgColor,
                 ),
               ),
-            )
-          ],
-        ));
+              PageView(
+                controller: pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    bottomNavBarIndex = index;
+                  });
+                },
+                children: [
+                  Center(
+                    child: MoviewPage(),
+                  ),Center(
+                    child: Text(
+                        'My Tickets'
+                    ),
+                  )
+                ],
+              ),
+              createCustomeBottomNavbar(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 46,
+                  width: 46,
+                  margin: EdgeInsets.only(bottom: 42),
+                  child: FloatingActionButton(
+                    elevation: 0,
+                    backgroundColor: accentColor,
+                    child: SizedBox(
+                      height: 26,
+                      width: 26,
+                      child: Icon(
+                        MdiIcons.walletPlus,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ),
+                    onPressed: () {
+                      context.bloc<UserBloc>().add(SignOut());
+                      AuthServices.signOut();
+                    },
+                  ),
+                ),
+              )
+            ],
+          )),
+    );
   }
 
   Widget createCustomeBottomNavbar() => Align(
